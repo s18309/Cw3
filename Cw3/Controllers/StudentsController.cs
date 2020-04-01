@@ -54,13 +54,14 @@ namespace Cw3.Controllers
 
 
         [HttpGet("{id}")]
-        public IActionResult GetStudent(String id)
+        public IActionResult GetStudent(String @id)
         {
             List<Student> _students = new List<Student>();
 
             using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s18309;Integrated Security=True"))
             using (var com = new SqlCommand())
             {
+                
                 com.Connection = con;
                 com.CommandText = ("select *  from Enrollment inner join Student on Student.IdEnrollment = Enrollment.IdEnrollment where IndexNumber =" + @id);
                 com.Parameters.AddWithValue("id", id);

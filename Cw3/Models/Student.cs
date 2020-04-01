@@ -22,6 +22,14 @@ namespace Cw3.Models
         public int IdStudy { get; set; }
         public string StartDate { get; set; }
 
+        public bool IsComplete()
+        {
+            if (this.FirstName == null || this.LastName == null || this.IndexNumber == null
+                || this.BirthDate == null || this.Studies == null) return false;
+
+            return true;
+        }
+
 
 
 
