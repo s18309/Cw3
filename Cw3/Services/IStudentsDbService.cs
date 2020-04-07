@@ -11,7 +11,8 @@ namespace Cw3.Services
     {
 
         public IActionResult RegisterStudent(Student stud);
-        
+
+        public bool CheckStudent(string index);
 
     }
 }

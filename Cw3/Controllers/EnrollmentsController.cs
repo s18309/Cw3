@@ -22,9 +22,13 @@ namespace Cw3.Controllers
             }
 
             return isdbs.RegisterStudent(Student);
-            
-
-            
         }
+            /*
+            [HttpPost("promotions")]
+            public IActionResult PromoteSemester([FromBody] StudiesInfo Studies, [FromServices] IStudentsDbService isdbs)
+             {
+
+             }
+             */
     }
 }

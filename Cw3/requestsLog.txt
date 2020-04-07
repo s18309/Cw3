@@ -1,0 +1,46 @@
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollectionPOST
+/api/enrollments
+{
+    "IndexNumber": "1234561234567",
+    "FirstName": "Andrzej",
+    "LastName": "Malewski",
+    "BirthDate": "30.03.1993",
+    "Studies": "Alchemia"
+}
+Microsoft.AspNetCore.Http.QueryCollectionPOST
+/api/enrollments
+{
+    "IndexNumber": "1234561234567",
+    "FirstName": "Andrzej",
+    "LastName": "Malewski",
+    "BirthDate": "30.03.1993",
+    "Studies": "Alchemia"
+}
+Microsoft.AspNetCore.Http.QueryCollectionGET
+/
+
+Microsoft.AspNetCore.Http.QueryCollectionPOST
+/api/enrollments
+{
+    "IndexNumber": "1234561234567",
+    "FirstName": "Andrzej",
+    "LastName": "Malewski",
+    "BirthDate": "30.03.1993",
+    "Studies": "Alchemia"
+}
+Microsoft.AspNetCore.Http.QueryCollectionGET
+/
+
+Microsoft.AspNetCore.Http.QueryCollectionPOST
+/api/enrollments
+{
+    "IndexNumber": "1234561234567",
+    "FirstName": "Andrzej",
+    "LastName": "Malewski",
+    "BirthDate": "30.03.1993",
+    "Studies": "Alchemia"
+}
+Microsoft.AspNetCore.Http.QueryCollection

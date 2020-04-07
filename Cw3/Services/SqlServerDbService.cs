@@ -12,83 +12,112 @@ namespace Cw3.Services
     {
         private string sqlCon = "Data Source=db-mssql;Initial Catalog=s18309;Integrated Security=True";
 
+        public bool CheckStudent(string index)
+        {
+            using (var con = new SqlConnection(sqlCon))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = con;
+                con.Open();
+                com.CommandText = "Select 1 from Student where Student.IndexNumber = @index";
+                com.Parameters.AddWithValue("index", index);
+                var dr = com.ExecuteReader();
+                    bool indexExists = dr.Read();
+                    if (!indexExists)
+                    {
+                        return false;
+                    }
+
+                    return true;
+            }
+        }
+            
+
         public IActionResult RegisterStudent(Student stud)
         {
             using (var con = new SqlConnection(sqlCon))
             using (var com = new SqlCommand())
             {
                 com.Connection = con;
-                com.CommandText = "Select 7 from Studies where Studies.Name = @studiesName";
-                com.Parameters.AddWithValue("studiesName", stud.Studies);
-
                 con.Open();
-
-                var dr = com.ExecuteReader();
-                bool StudiesExist = dr.Read();
-                dr.Close();
-
-                if (!StudiesExist)
+                SqlTransaction sqlT = null;
+                try
                 {
-                    return new BadRequestResult();
-                }
-                 
-                com.CommandText = "SELECT TOP 1  Enrollment.IdEnrollment FROM Enrollment INNER JOIN Studies ON Enrollment.IdStudy = Studies.IdStudy WHERE Enrollment.Semester = 1 AND Studies.Name = @studiesName ORDER BY IdEnrollment DESC; ";
-                dr = com.ExecuteReader();
-                bool FirstSemesterExists = dr.Read();                
-                int IdEnrollment;
+                    sqlT = con.BeginTransaction();
+                    com.CommandText = "Select 7 from Studies where Studies.Name = @studiesName";
+                    com.Parameters.AddWithValue("studiesName", stud.Studies);                
 
-                //dodawanie przedmiotu na pierwszym roku
-                if (!FirstSemesterExists)
-                {
+                    var dr = com.ExecuteReader();
+                    bool StudiesExist = dr.Read();
                     dr.Close();
-                    com.CommandText =
-                        "BEGIN " +
-                        "DECLARE @idStudy int = (SELECT Studies.IdStudy FROM Studies" +
-                        "WHERE Studies.Name = @studiesName); " +
-                        "DECLARE @idEnrollment int = (SELECT TOP 1 Enrollment.IdEnrollment FROM Enrollment " +
-                        "ORDER BY Enrollment.IdEnrollment DESC) + 1; " +
-                        "INSERT INTO Enrollment(IdEnrollment, Semester, IdStudy, StartDate)" +
-                        "VALUES (@idEnrollment, 1, @idStudy, CURRENT_TIMESTAMP) ; " +
-                        "Select @idEnrollment;" +
-                        "END";
+
+                    if (!StudiesExist)
+                    {
+                        return new BadRequestResult();
+                    }
+
+                    com.CommandText = "SELECT TOP 1  Enrollment.IdEnrollment FROM Enrollment INNER JOIN Studies ON Enrollment.IdStudy = Studies.IdStudy WHERE Enrollment.Semester = 1 AND Studies.Name = @studiesName ORDER BY IdEnrollment DESC; ";
+                    dr = com.ExecuteReader();
+                    bool FirstSemesterExists = dr.Read();
+                    int IdEnrollment;
+
+                    //dodawanie przedmiotu na pierwszym roku
+                    if (!FirstSemesterExists)
+                    {
+                        dr.Close();
+                        com.CommandText =
+                            "BEGIN " +
+                            "DECLARE @idStudy int = (SELECT Studies.IdStudy FROM Studies" +
+                            "WHERE Studies.Name = @studiesName); " +
+                            "DECLARE @idEnrollment int = (SELECT TOP 1 Enrollment.IdEnrollment FROM Enrollment " +
+                            "ORDER BY Enrollment.IdEnrollment DESC) + 1; " +
+                            "INSERT INTO Enrollment(IdEnrollment, Semester, IdStudy, StartDate)" +
+                            "VALUES (@idEnrollment, 1, @idStudy, CURRENT_TIMESTAMP) ; " +
+                            "Select @idEnrollment;" +
+                            "END";
+
+                        dr = com.ExecuteReader();
+                        dr.Read();
+                        IdEnrollment = dr.GetInt32(0);
+                        dr.Close();
+                    }
+                    else
+                    {
+                        IdEnrollment = dr.GetInt32(0);
+                        dr.Close();
+                    }
+
+                    com.CommandText = "SELECT 7 FROM Student WHERE Student.IndexNumber = @indexNumber";
+                    com.Parameters.AddWithValue("indexNumber", stud.IndexNumber);
 
                     dr = com.ExecuteReader();
-                    dr.Read();
-                    IdEnrollment = dr.GetInt32(0);
+                    bool IndexTaken = dr.Read();
                     dr.Close();
-                }
-                else
+
+                    if (IndexTaken)
+                    {
+                        return new BadRequestResult();
+                    }
+
+                    com.CommandText = "DECLARE @datetmp date = PARSE(@bdate as date USING 'en-GB'); INSERT INTO Student VALUES(@indexNumber, @fname, @lname, @datetmp, @idEnrollment)";
+                    com.Parameters.Clear();
+                    com.Parameters.AddWithValue("fname", stud.FirstName);
+                    com.Parameters.AddWithValue("indexNumber", stud.IndexNumber);
+                    com.Parameters.AddWithValue("lname", stud.LastName);
+                    com.Parameters.AddWithValue("bdate", stud.BirthDate.Replace('.', '-'));
+                    com.Parameters.AddWithValue("idEnrollment", IdEnrollment);
+
+                    com.ExecuteNonQuery();
+                    sqlT.Commit();
+                }catch(Exception e)
                 {
-                    IdEnrollment = dr.GetInt32(0);
-                    dr.Close();
-                }
-
-                com.CommandText = "SELECT 7 FROM Student WHERE Student.IndexNumber = @indexNumber";
-                com.Parameters.AddWithValue("indexNumber", stud.IndexNumber);
-
-                dr = com.ExecuteReader();
-                bool IndexTaken = dr.Read();
-                dr.Close();
-
-                if (IndexTaken)
-                {
+                    Console.WriteLine(e);
+                    sqlT.Rollback();
                     return new BadRequestResult();
                 }
-                
-                com.CommandText = "DECLARE @datetmp date = PARSE(@bdate as date USING 'en-GB'); INSERT INTO Student VALUES(@indexNumber, @fname, @lname, @datetmp, @idEnrollment)";
-                com.Parameters.Clear();
-                com.Parameters.AddWithValue("fname", stud.FirstName);
-                com.Parameters.AddWithValue("indexNumber", stud.IndexNumber);
-                com.Parameters.AddWithValue("lname", stud.LastName);
-                com.Parameters.AddWithValue("bdate", stud.BirthDate.Replace('.', '-'));
-                com.Parameters.AddWithValue("idEnrollment", IdEnrollment);
-
-                com.ExecuteNonQuery();
-
-
             }
 
-            return new OkResult();
+            return new StatusCodeResult(201);
 
         }
 
