@@ -1,13 +1,15 @@
 
 using Cw3.Middlewares;
 using Cw3.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Cw3
 {
@@ -25,7 +27,20 @@ namespace Cw3
         {
             // services.AddSingleton<IDbService, MockDbService>();
             services.AddScoped<IStudentsDbService, SqlServerDbService>();
-            services.AddControllers();
+            services.AddControllers()
+            .AddXmlSerializerFormatters();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            {
+                ValidateAudience = true,
+                ValidateIssuer = true,
+                ValidIssuer = "Gakko",
+                ValidAudience = "Students",
+                ValidateLifetime = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("DefinietlyNotASecretKeyasd213qwsdeq234123saw"))
+
+            }
+            ); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,6 +84,8 @@ namespace Cw3
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
+
 
             app.UseEndpoints(endpoints =>
             {

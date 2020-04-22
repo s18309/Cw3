@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Cw3.DTOs;
 using Cw3.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Cw3.Controllers
 {
@@ -20,6 +26,7 @@ namespace Cw3.Controllers
         */
 
         [HttpGet]
+        [Authorize(Roles = "employee")]
         public IActionResult GetStudent()
         {
             //return Ok(_dbService.GetStudents());
@@ -104,6 +111,7 @@ namespace Cw3.Controllers
             return Ok("Usuwanie ukonczone");
         }
 
+      
 
     }
 

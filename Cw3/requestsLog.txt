@@ -43,4 +43,329 @@ Microsoft.AspNetCore.Http.QueryCollectionPOST
     "BirthDate": "30.03.1993",
     "Studies": "Alchemia"
 }
+Microsoft.AspNetCore.Http.QueryCollectionGET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/favicon.ico
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/students
+{
+	"login": "aaa",
+	"pasword": "aaaaa"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/favicon.ico
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"login": "aaa",
+	"pasword": "aaaaa"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"login": "aaa",
+	"password": "aaaaa"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/login
+{
+	"login": "aaa",
+	"password": "aaaaa"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/login
+{
+	"eska": "aaa",
+	"password": "aaaaa"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/favicon.ico
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/login
+{
+	"eska": "aaa",
+	"password": "aaaaa"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/login
+{
+	"eska": "aaa",
+	"password": "aaaaa"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/login
+{
+	"eska": "aaa",
+	"password": "aaaaa"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/login
+{
+	"eska": "aaa",
+	"haslo": "aaaaa"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/login
+{
+	"eska": "1",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/login
+{
+	"eska": "1",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/api/students
+{
+	"eska": "1",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"eska": "1",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"eska": "1",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/login
+{
+	"eska": "1",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/api/enrollments
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/login
+{
+	"Eska": "2"
+	"Password": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/login
+{
+	"Eska": "2",
+	"Password": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/login
+{
+	"index": "2",
+	"Pass": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/login
+{
+	"eska": "2",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/
+
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/login
+{
+	"eska": "2",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/login
+{
+	"eska": "1",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"eska": "1",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"eska": "1",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/enroll
+{
+	"eska": "1",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"eska": "1",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/api/enrollments
+{
+	"eska": "1",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"eska": "1",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"eska": "1",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/api/enrollments
+{
+	"eska": "1",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"eska": "1",
+	"haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/api/enrollments
+
 Microsoft.AspNetCore.Http.QueryCollection
