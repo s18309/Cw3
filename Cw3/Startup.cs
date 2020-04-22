@@ -53,7 +53,7 @@ namespace Cw3
 
 
             app.UseMiddleware<LoggingMiddleware>();
-
+/*
             app.Use(async (context, next) => {
                 if (!context.Request.Headers.ContainsKey("Index"))
                 {
@@ -73,7 +73,7 @@ namespace Cw3
                 }
                 await next();
             });
-
+*/
 
 
 

@@ -22,16 +22,62 @@ namespace Cw3.Services
                 com.CommandText = "Select 1 from Student where Student.IndexNumber = @index";
                 com.Parameters.AddWithValue("index", index);
                 var dr = com.ExecuteReader();
-                    bool indexExists = dr.Read();
-                    if (!indexExists)
-                    {
-                        return false;
-                    }
+                bool indexExists = dr.Read();
+                if (!indexExists)
+                {
+                    return false;
+                }
 
-                    return true;
+                return true;
             }
         }
-            
+
+        public string getFromREFRESHTOKEN(string REFRESHTOKEN)
+        {
+            using (var con = new SqlConnection(sqlCon))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = con;
+                con.Open();
+                com.CommandText = "SELECT IndexNumber FROM Student WHERE REFRESHTOKEN = @REFRESHTOKEN";
+                com.Parameters.AddWithValue("REFRESHTOKEN", REFRESHTOKEN);
+                var dr = com.ExecuteReader();
+
+                if (!dr.Read())
+                {
+                    return String.Empty;
+                }
+
+                return dr["IndexNumber"].ToString();
+
+
+
+
+
+
+            }
+        }
+
+        public string getSalt(string index)
+        {
+            using (var con = new SqlConnection(sqlCon))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = con;
+                con.Open();
+                com.CommandText = "SELECT Salt FROM Student WHERE IndexNumber = @Index";
+                com.Parameters.AddWithValue("Index", index);
+                var dr = com.ExecuteReader();
+
+                if (!dr.Read())
+                {
+                    return String.Empty;
+                }
+
+                return dr["Salt"].ToString();
+
+            }
+        }
 
         public IActionResult RegisterStudent(Student stud)
         {
@@ -45,7 +91,7 @@ namespace Cw3.Services
                 {
                     sqlT = con.BeginTransaction();
                     com.CommandText = "Select 7 from Studies where Studies.Name = @studiesName";
-                    com.Parameters.AddWithValue("studiesName", stud.Studies);                
+                    com.Parameters.AddWithValue("studiesName", stud.Studies);
 
                     var dr = com.ExecuteReader();
                     bool StudiesExist = dr.Read();
@@ -109,7 +155,8 @@ namespace Cw3.Services
 
                     com.ExecuteNonQuery();
                     sqlT.Commit();
-                }catch(Exception e)
+                }
+                catch (Exception e)
                 {
                     Console.WriteLine(e);
                     sqlT.Rollback();
@@ -121,7 +168,51 @@ namespace Cw3.Services
 
         }
 
-    
-       
+        public void SetPassword(string index, string Pssw)
+        {
+
+            using (var con = new SqlConnection(sqlCon))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = con;
+                con.Open();
+                com.CommandText = "UPDATE Student SET Password = @password where Student.IndexNumber = @index";
+                com.Parameters.AddWithValue("index", index);
+                com.Parameters.AddWithValue("password", Pssw);
+                com.ExecuteNonQuery();
+
+            }
+        }
+
+        public void SetREFRESHTOKEN(string index, string token)
+        {
+            using (var con = new SqlConnection(sqlCon))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = con;
+                con.Open();
+                com.CommandText = "UPDATE Student SET REFRESHTOKEN = @tokeniatko where Student.IndexNumber = @index";
+                com.Parameters.AddWithValue("index", index);
+                com.Parameters.AddWithValue("tokeniatko", token);
+                com.ExecuteNonQuery();
+
+            }
+        }
+
+        public void SetSalt(string index, string Salt)
+        {
+
+            using (var con = new SqlConnection(sqlCon))
+            using (var com = new SqlCommand())
+            {
+                com.Connection = con;
+                con.Open();
+                com.CommandText = "UPDATE Student SET SALT = @salt where Student.IndexNumber = @index";
+                com.Parameters.AddWithValue("index", index);
+                com.Parameters.AddWithValue("salt", Salt);
+                com.ExecuteNonQuery();
+
+            }
+        }
     }
 }

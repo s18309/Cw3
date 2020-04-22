@@ -398,3 +398,176 @@ GET
 	"Haslo": "Ala"
 }
 Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"Eska": "1",
+	"Haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"Eska": "1",
+	"Haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"Eska": "1",
+	"Haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/REFRESHTOKEN
+{
+"REFRESHTOKEN": "b7668401-5602-494c-9ac7-221349901269"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/REFRESHTOKEN
+{
+"REFRESHTOKEN": "b7668401-5602-494c-9ac7-221349901269"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/REFRESHTOKEN
+{
+"REFRESHTOKEN": "b7668401-5602-494c-9ac7-221349901269"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/REFRESHTOKEN
+{
+	"REFRESHTOKEN": "b7668401-5602-494c-9ac7-221349901269"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/REFRESHTOKEN
+{
+	"REFRESHTOKEN" : "b7668401-5602-494c-9ac7-221349901269"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/REFRESHTOKEN
+{
+	"REFRESHTOKEN" : "b7668401-5602-494c-9ac7-221349901269"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/REFRESHTOKEN
+{
+	"REFRESHTOKEN" : "b7668401-5602-494c-9ac7-221349901269"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/ref
+{
+	"refreshtoken" : "b7668401-5602-494c-9ac7-221349901269"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/ref/b7668401-5602-494c-9ac7-221349901269
+
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/kura
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/kura
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/kura
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/kura
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments/kura
+
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"Eska": "1",
+	"Haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"Eska": "1",
+	"Haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/favicon.ico
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"Eska": "1",
+	"Haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+POST
+/api/enrollments
+{
+	"Eska": "1",
+	"Haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection

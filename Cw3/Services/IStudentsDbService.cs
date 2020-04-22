@@ -14,5 +14,11 @@ namespace Cw3.Services
 
         public bool CheckStudent(string index);
 
+        public void SetREFRESHTOKEN(string index, string token);
+        public string getFromREFRESHTOKEN(string REFRESHTOKEN);
+
+        public string getSalt(string index);
+        public void SetSalt(string index,string Salt);
+        public void SetPassword(string index,string Pssw);
     }
 }
