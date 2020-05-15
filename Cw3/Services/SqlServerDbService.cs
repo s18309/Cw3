@@ -10,209 +10,140 @@ namespace Cw3.Services
 {
     public class SqlServerDbService : IStudentsDbService
     {
-        private string sqlCon = "Data Source=db-mssql;Initial Catalog=s18309;Integrated Security=True";
-
-        public bool CheckStudent(string index)
+      
+        public void DeleteStudent(string index)
         {
-            using (var con = new SqlConnection(sqlCon))
-            using (var com = new SqlCommand())
-            {
-                com.Connection = con;
-                con.Open();
-                com.CommandText = "Select 1 from Student where Student.IndexNumber = @index";
-                com.Parameters.AddWithValue("index", index);
-                var dr = com.ExecuteReader();
-                bool indexExists = dr.Read();
-                if (!indexExists)
-                {
-                    return false;
-                }
-
-                return true;
-            }
+            var db = new s18309Context();
+            var s = db.Student.Where(student => student.IndexNumber == index).First();
+            db.Student.Remove(s);
+            db.SaveChanges();
+            
+            
         }
 
-        public string getFromREFRESHTOKEN(string REFRESHTOKEN)
+
+        public IEnumerable<Student> getStudentsList()
         {
-            using (var con = new SqlConnection(sqlCon))
-            using (var com = new SqlCommand())
-            {
-                com.Connection = con;
-                con.Open();
-                com.CommandText = "SELECT IndexNumber FROM Student WHERE REFRESHTOKEN = @REFRESHTOKEN";
-                com.Parameters.AddWithValue("REFRESHTOKEN", REFRESHTOKEN);
-                var dr = com.ExecuteReader();
+            var db = new s18309Context();
+            var res = db.Student.ToList();
 
-                if (!dr.Read())
-                {
-                    return String.Empty;
-                }
-
-                return dr["IndexNumber"].ToString();
-
-
-
-
-
-
-            }
+            return res;
         }
 
-        public string getSalt(string index)
+        public void ModifyStudent(Student stud)
         {
-            using (var con = new SqlConnection(sqlCon))
-            using (var com = new SqlCommand())
+            var db = new s18309Context();
+            var student = db.Student.Where(s => s.IndexNumber.Equals(stud.IndexNumber)).First();
+
+            if (stud.FirstName != null && !stud.FirstName.Equals(student.FirstName))
             {
-                com.Connection = con;
-                con.Open();
-                com.CommandText = "SELECT Salt FROM Student WHERE IndexNumber = @Index";
-                com.Parameters.AddWithValue("Index", index);
-                var dr = com.ExecuteReader();
-
-                if (!dr.Read())
-                {
-                    return String.Empty;
-                }
-
-                return dr["Salt"].ToString();
-
+                student.FirstName = stud.FirstName;
             }
+
+            if (stud.LastName != null && !stud.LastName.Equals(student.LastName))
+            {
+                student.LastName = stud.LastName;
+            }
+
+            if (stud.IdEnrollment != 0 && stud.IdEnrollment != student.IdEnrollment)
+            {
+                student.IdEnrollment = stud.IdEnrollment;
+            }
+
+            if (stud.BirthDate != null && !stud.BirthDate.Equals(student.BirthDate))
+            {
+                student.BirthDate = stud.BirthDate;
+            }
+
+            db.SaveChanges();
+
         }
 
-        public IActionResult RegisterStudent(Student stud)
+        public IActionResult PromoteStudent(int studiesId, int semester)
         {
-            using (var con = new SqlConnection(sqlCon))
-            using (var com = new SqlCommand())
+            var db = new s18309Context();
+            var studiesToPromote = db.Studies.Where(s => s.IdStudy == studiesId).First();
+
+            var enrollmentToPromote =
+                db.Enrollment.Where(e => e.IdStudy == studiesToPromote.IdStudy && e.Semester == semester).First();
+
+                var afterPromoteEnrollment = new Enrollment
+                {
+                    IdEnrollment = db.Enrollment.Max(e => e.IdEnrollment) + 1,
+                    Semester = semester + 1,
+                    IdStudy = studiesToPromote.IdStudy,
+                    StartDate = DateTime.Now
+                };
+                db.Enrollment.Add(afterPromoteEnrollment);
+                db.SaveChanges();
+            
+
+            var studentsToUpdate = db.Student.Where(s => s.IdEnrollment == enrollmentToPromote.IdEnrollment)
+                .ToList();
+
+            foreach (Student stud in studentsToUpdate)
             {
-                com.Connection = con;
-                con.Open();
-                SqlTransaction sqlT = null;
-                try
+                stud.IdEnrollment = afterPromoteEnrollment.IdEnrollment;
+            }
+
+            db.SaveChanges();
+
+            return new OkResult();
+        }
+
+        public IActionResult RegisterStudent(Student stud, string studiesName )
+        {
+            var db = new s18309Context();
+            
+               
+                var doesExist = db.Studies.Any(s => s.Name.Equals(studiesName));
+                if (!doesExist)
                 {
-                    sqlT = con.BeginTransaction();
-                    com.CommandText = "Select 7 from Studies where Studies.Name = @studiesName";
-                    com.Parameters.AddWithValue("studiesName", stud.Studies);
-
-                    var dr = com.ExecuteReader();
-                    bool StudiesExist = dr.Read();
-                    dr.Close();
-
-                    if (!StudiesExist)
-                    {
-                        return new BadRequestResult();
-                    }
-
-                    com.CommandText = "SELECT TOP 1  Enrollment.IdEnrollment FROM Enrollment INNER JOIN Studies ON Enrollment.IdStudy = Studies.IdStudy WHERE Enrollment.Semester = 1 AND Studies.Name = @studiesName ORDER BY IdEnrollment DESC; ";
-                    dr = com.ExecuteReader();
-                    bool FirstSemesterExists = dr.Read();
-                    int IdEnrollment;
-
-                    //dodawanie przedmiotu na pierwszym roku
-                    if (!FirstSemesterExists)
-                    {
-                        dr.Close();
-                        com.CommandText =
-                            "BEGIN " +
-                            "DECLARE @idStudy int = (SELECT Studies.IdStudy FROM Studies" +
-                            "WHERE Studies.Name = @studiesName); " +
-                            "DECLARE @idEnrollment int = (SELECT TOP 1 Enrollment.IdEnrollment FROM Enrollment " +
-                            "ORDER BY Enrollment.IdEnrollment DESC) + 1; " +
-                            "INSERT INTO Enrollment(IdEnrollment, Semester, IdStudy, StartDate)" +
-                            "VALUES (@idEnrollment, 1, @idStudy, CURRENT_TIMESTAMP) ; " +
-                            "Select @idEnrollment;" +
-                            "END";
-
-                        dr = com.ExecuteReader();
-                        dr.Read();
-                        IdEnrollment = dr.GetInt32(0);
-                        dr.Close();
-                    }
-                    else
-                    {
-                        IdEnrollment = dr.GetInt32(0);
-                        dr.Close();
-                    }
-
-                    com.CommandText = "SELECT 7 FROM Student WHERE Student.IndexNumber = @indexNumber";
-                    com.Parameters.AddWithValue("indexNumber", stud.IndexNumber);
-
-                    dr = com.ExecuteReader();
-                    bool IndexTaken = dr.Read();
-                    dr.Close();
-
-                    if (IndexTaken)
-                    {
-                        return new BadRequestResult();
-                    }
-
-                    com.CommandText = "DECLARE @datetmp date = PARSE(@bdate as date USING 'en-GB'); INSERT INTO Student VALUES(@indexNumber, @fname, @lname, @datetmp, @idEnrollment)";
-                    com.Parameters.Clear();
-                    com.Parameters.AddWithValue("fname", stud.FirstName);
-                    com.Parameters.AddWithValue("indexNumber", stud.IndexNumber);
-                    com.Parameters.AddWithValue("lname", stud.LastName);
-                    com.Parameters.AddWithValue("bdate", stud.BirthDate.Replace('.', '-'));
-                    com.Parameters.AddWithValue("idEnrollment", IdEnrollment);
-
-                    com.ExecuteNonQuery();
-                    sqlT.Commit();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    sqlT.Rollback();
                     return new BadRequestResult();
                 }
+
+                var idTaken = db.Student.Any(s => s.IndexNumber.Equals(stud.IndexNumber));
+
+                if (idTaken)
+                {
+                    return new BadRequestResult();
+                }
+
+                Student enrolledStud = new Student
+                {
+                    IndexNumber = stud.IndexNumber,
+                    LastName = stud.LastName,
+                    BirthDate = stud.BirthDate,
+                    FirstName = stud.FirstName,
+                    IdEnrollment = 0 //just for a moment tho
+                };
+
+                db.Student.Add(enrolledStud);
+                db.SaveChanges();
+
+                int idStudy = db.Studies.Where(s => s.Name.Equals(studiesName)).First().IdStudy;
+                int lastidEnrollment = db.Enrollment.Where(e => e.Semester == 1 && e.IdStudy == idStudy)
+                    .OrderByDescending(e => e.StartDate).First().IdEnrollment;
+
+              
+                    Enrollment newEnrollment = new Enrollment
+                    {
+                        IdEnrollment = lastidEnrollment + 1,
+                        Semester = 1,
+                        IdStudy = idStudy,
+                        StartDate = DateTime.Now
+                    };
+                    db.Enrollment.Add(newEnrollment);
+                    db.SaveChanges();
+                
+
+               enrolledStud.IdEnrollment = lastidEnrollment + 1;
+               db.SaveChanges();
+
+            return new OkResult();
             }
-
-            return new StatusCodeResult(201);
-
-        }
-
-        public void SetPassword(string index, string Pssw)
-        {
-
-            using (var con = new SqlConnection(sqlCon))
-            using (var com = new SqlCommand())
-            {
-                com.Connection = con;
-                con.Open();
-                com.CommandText = "UPDATE Student SET Password = @password where Student.IndexNumber = @index";
-                com.Parameters.AddWithValue("index", index);
-                com.Parameters.AddWithValue("password", Pssw);
-                com.ExecuteNonQuery();
-
-            }
-        }
-
-        public void SetREFRESHTOKEN(string index, string token)
-        {
-            using (var con = new SqlConnection(sqlCon))
-            using (var com = new SqlCommand())
-            {
-                com.Connection = con;
-                con.Open();
-                com.CommandText = "UPDATE Student SET REFRESHTOKEN = @tokeniatko where Student.IndexNumber = @index";
-                com.Parameters.AddWithValue("index", index);
-                com.Parameters.AddWithValue("tokeniatko", token);
-                com.ExecuteNonQuery();
-
-            }
-        }
-
-        public void SetSalt(string index, string Salt)
-        {
-
-            using (var con = new SqlConnection(sqlCon))
-            using (var com = new SqlCommand())
-            {
-                com.Connection = con;
-                con.Open();
-                com.CommandText = "UPDATE Student SET SALT = @salt where Student.IndexNumber = @index";
-                com.Parameters.AddWithValue("index", index);
-                com.Parameters.AddWithValue("salt", Salt);
-                com.ExecuteNonQuery();
-
-            }
+           
         }
     }
-}
+
+   

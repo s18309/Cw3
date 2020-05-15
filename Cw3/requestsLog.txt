@@ -571,3 +571,26 @@ POST
 	"Haslo": "Ala"
 }
 Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/favicon.ico
+
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/
+
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/favicon.ico
+
+Microsoft.AspNetCore.Http.QueryCollection
+GET
+/students
+{
+	"Eska": "1",
+	"Haslo": "Ala"
+}
+Microsoft.AspNetCore.Http.QueryCollection

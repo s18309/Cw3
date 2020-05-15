@@ -1,4 +1,5 @@
-﻿using Cw3.Models;
+﻿
+using Cw3.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,15 +11,12 @@ namespace Cw3.Services
     public interface IStudentsDbService
     {
 
-        public IActionResult RegisterStudent(Student stud);
+        public IActionResult RegisterStudent(Student stud, string studiesName);
+        public IActionResult PromoteStudent(int studiesId, int semester);
+        public IEnumerable<Student> getStudentsList();
 
-        public bool CheckStudent(string index);
+        public void DeleteStudent(string index);
+        public void ModifyStudent(Student stud);
 
-        public void SetREFRESHTOKEN(string index, string token);
-        public string getFromREFRESHTOKEN(string REFRESHTOKEN);
-
-        public string getSalt(string index);
-        public void SetSalt(string index,string Salt);
-        public void SetPassword(string index,string Pssw);
     }
 }
